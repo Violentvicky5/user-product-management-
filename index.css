@@ -1,0 +1,65 @@
+body {
+  font: 1em sans-serif Arial, Helvetica;
+}
+
+label {
+  margin-left: 2px;
+}
+
+button {
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+input {
+  border: 1px solid gray;
+  border-radius: 10px;
+  height: 50px;
+  border-color: whitesmoke;
+}
+
+.sizing {
+  height: 98%;
+}
+
+.floating-label {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.floating-label input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+}
+
+.floating-label label {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgb(124, 123, 123); /* black before focus */
+  font-size: 16px;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  background: white;
+  padding: 0 4px;
+}
+
+/* when input is focused OR has value */
+.floating-label input:focus,
+.floating-label input:not(:placeholder-shown) {
+  border-color: #1004fc; /* purple border */
+}
+
+.floating-label input:focus ~ label,
+.floating-label input:not(:placeholder-shown) ~ label {
+  top: -1px; /* move above input */
+  font-size: 13px; /* smaller font */
+  color: #0f02fd;
+  border-radius: 10px; /* purple color */
+}
