@@ -89,6 +89,15 @@ let products = [
     rating: 3,
     date: "2025-10-19",
   },
+  {
+    id: 11,
+    name: "tawa-pan",
+    price: 450,
+    category: "kichen-utensils",
+    sub_category: "utensils",
+    rating: 3,
+    date: "2025-10-19",
+  },
 ];
 
 function search() {
@@ -98,7 +107,7 @@ function search() {
     .trim();
 
   if (!inputSearch) {
-    document.getElementById("sample").value = "please enter product details";
+    alert("please enter product details");
     return;
   }
 
@@ -109,8 +118,10 @@ function search() {
       product.sub_category.toLowerCase().includes(inputSearch) ||
       product.date.includes(inputSearch)
   );
-
+  currentProducts = result;
+  document.getElementById("dynamicTable").innerHTML = "";
   if (result.length > 0) {
+    table(result);
     let showResult = result.map(
       (product) =>
         `id: ${product.id}, 
@@ -124,6 +135,9 @@ date: ${product.date}`
     document.getElementById("sample").value = showResult.join("\n\n");
   } else {
     document.getElementById("sample").value = "no products found";
+    let tbl = document.getElementById("dynamicTable");
+    tbl.innerHTML =
+      "<tr><td colspan='7' style='text-align:center'>No products found</td></tr>";
   }
 }
 
@@ -160,6 +174,7 @@ function addProduct() {
   alert(`product added successfully- product name: ${newProduct.name}`);
   let abc = JSON.stringify(newProduct);
   document.getElementById("sample").value = `${abc} added successfully`;
+  table(products);
   document.getElementById("name").value = "";
   document.getElementById("price").value = "";
   document.getElementById("category").value = "";
@@ -215,6 +230,7 @@ function delProduct() {
   if (index !== -1) {
     products.splice(index, 1);
     document.getElementById("sample").value = "product removed successfully";
+    table(products);
     document.getElementById("removeButton").value = "";
     removeProduct = null;
     document.getElementById("removeButton").innerHTML = "";
@@ -233,7 +249,7 @@ function delProduct() {
     rating: 5,
     date: "2025-10-15", */
 
-let UpdatingProduct = null;
+let updatingProduct = null;
 
 function updateProduct() {
   let productInput = document.getElementById("update_Product").value;
@@ -287,7 +303,81 @@ function savechanges() {
     `product with id: ${updatingProduct.id} and name: ${updatingProduct.name}updated successfully`
   );
   document.getElementById("sample").value = "product updated successfully";
+  table(products);
   document.getElementById("dynamicBtn").remove();
   document.getElementById("update_Product").value = "";
   console.log(products);
+}
+
+//dynamic table for all products in reverse order
+
+function table(products) {
+  let tbl = document.getElementById("dynamicTable");
+  tbl.innerHTML = "";
+  let thead = document.createElement("thead");
+  let headrow = document.createElement("tr");
+
+  Object.keys(products[0]).forEach((key) => {
+    let th = document.createElement("th");
+    th.textContent = key;
+    headrow.appendChild(th);
+  });
+  thead.appendChild(headrow);
+  tbl.appendChild(thead);
+
+  let tbody = document.createElement("tbody");
+
+  for (let i = products.length - 1; i >= 0; i--) {
+    let tablerow = document.createElement("tr");
+    Object.values(products[i]).forEach((value) => {
+      let td = document.createElement("td");
+      td.textContent = value;
+      tablerow.appendChild(td);
+    });
+    tbody.appendChild(tablerow);
+  }
+
+  tbl.appendChild(tbody);
+}
+
+table(products);
+
+//sorting function
+let currentProducts = [...products];
+let sortAscOrder = true;
+
+function sortByPrice() {
+  currentProducts.sort((a, b) =>
+    sortAscOrder ? a.price - b.price : b.price - a.price
+  );
+  document.getElementById("dynamicTable").innerHTML = "";
+  let btn = document.getElementById("sortingByPrice");
+  btn.value = sortAscOrder?"H-L":"L-H";
+  table(currentProducts);
+  sortAscOrder = !sortAscOrder;
+}
+
+
+//fILTER BY date
+
+let dateFilterAsc = true;
+
+function toggleDateFilter() {
+  let arrToSort = currentProducts.length ? currentProducts : products;
+
+  arrToSort.sort((a, b) => {
+    let dateA = new Date(a.date);
+    let dateB = new Date(b.date);
+    return dateFilterAsc ? dateA - dateB : dateB - dateA;
+  });
+
+  let btn = document.getElementById("dateFilterBtn");
+  btn.value = dateFilterAsc ? "P-T" : "T-P";
+
+  document.getElementById("dynamicTable").innerHTML = "";
+  table(arrToSort);
+
+  currentProducts = arrToSort;
+
+  dateFilterAsc = !dateFilterAsc;
 }

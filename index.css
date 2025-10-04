@@ -8,6 +8,7 @@ label {
 
 button {
   background-color: blue;
+  height: 50px ;
   color: white;
   border: none;
   border-radius: 5px;
@@ -20,7 +21,11 @@ input {
 }
 
 .sizing {
-  height: 98%;
+  height: 75%;
+}
+
+.customTableSizing{
+ width: 125px; 
 }
 
 .floating-label {
@@ -42,7 +47,7 @@ input {
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: rgb(124, 123, 123); /* black before focus */
+  color: rgb(124, 123, 123);
   font-size: 16px;
   pointer-events: none;
   transition: all 0.2s ease;
@@ -50,16 +55,37 @@ input {
   padding: 0 4px;
 }
 
-/* when input is focused OR has value */
 .floating-label input:focus,
 .floating-label input:not(:placeholder-shown) {
-  border-color: #1004fc; /* purple border */
+  border-color: #1004fc; 
 }
 
 .floating-label input:focus ~ label,
 .floating-label input:not(:placeholder-shown) ~ label {
-  top: -1px; /* move above input */
-  font-size: 13px; /* smaller font */
-  color: #0f02fd;
-  border-radius: 10px; /* purple color */
+  top: -1px; 
+  font-size: 13px; 
+    color: #0f02fd;
+  border-radius: 10px; 
+}
+
+#dynamicTable {
+  width: 100%;                 
+  border-collapse: collapse;   
+  table-layout: fixed;        
+}
+#dynamicTable th{
+  color: rgb(117, 117, 117);
+}
+#dynamicTable td:last-child {
+  color: rgb(117, 117, 117);         
+}
+#dynamicTable th, 
+#dynamicTable td {
+  width: calc(100% / 7);      
+  text-align: start;
+  border-bottom: 2px solid rgb(168, 168, 168);
+  box-shadow: 1px solid rgb(168, 168, 168);
+  height: 80px;               
+  padding: 8px;
+  text-transform: capitalize;
 }
